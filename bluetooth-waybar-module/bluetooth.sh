@@ -74,12 +74,12 @@ bluetoothStatus ()
   fi
 
   if [[ $(bluetoothctl show $(bluetoothctl list | awk '{print $2}')| grep "Powered: yes") == "" ]]; then
-    echo "{\"class\": \"off\", \"text\": \"󰂲\", \"tooltip\": \"off\"}" | jq --unbuffered --compact-output
+    echo "{\"class\": \"off\", \"text\": \"󰂲 \", \"tooltip\": \"off\"}" | jq --unbuffered --compact-output
   else
     if [[ -n $(bluetoothctl info | grep "Connected: yes") ]]; then
-      echo "{\"class\": \"on\", \"text\": \"󰂱\", \"tooltip\": \"$(currentlyConnectedDevice)\"}" | jq --unbuffered --compact-output
+      echo "{\"class\": \"on\", \"text\": \"󰂱 \", \"tooltip\": \"$(currentlyConnectedDevice)\"}" | jq --unbuffered --compact-output
     else
-      echo "{\"class\": \"on\", \"text\": \"󰂯\", \"tooltip\": \"on but not connected\"}" | jq --unbuffered --compact-output
+      echo "{\"class\": \"on\", \"text\": \"󰂯 \", \"tooltip\": \"on but not connected\"}" | jq --unbuffered --compact-output
     fi
   fi
 }
