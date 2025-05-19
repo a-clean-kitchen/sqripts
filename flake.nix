@@ -24,7 +24,7 @@
       in rec {
         defaultPackage = bundleScript "draggin" (with pkgs; [ cowsay ]) ./default.sh;
         packages = {
-          bluetoof = bundleScript "bluetoof" (with pkgs; [ bluez hyprctl ]) ./bluetooth-waybar-module/bluetooth.sh;
+          bluetoof = bundleScript "bluetoof" (with pkgs; [ bluez hyprland jq kitty bluetui ]) ./bluetooth-waybar-module/bluetooth.sh;
         };
         apps = let
           program = name: "${self.packages."${system}"."${name}"}/bin/${name}";
