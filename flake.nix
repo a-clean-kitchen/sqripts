@@ -24,6 +24,7 @@
       in rec {
         defaultPackage = bundleScript "draggin" (with pkgs; [ cowsay ]) ./default.sh;
         packages = {
+          volume = bundleScript "volume" (with pkgs; [ pamixer libnotify ]) ./volume-control/volume-control.sh;
           bluetoof = bundleScript "bluetoof" (with pkgs; [ bluez hyprland jq kitty bluetui ]) ./bluetooth-waybar-module/bluetooth.sh;
           brightness = bundleScript "brightness" (with pkgs; [ brightnessctl libnotify ]) ./brightness-control/brightness-control.sh;
         };
