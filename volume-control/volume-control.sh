@@ -113,25 +113,38 @@ dec_mic_volume() {
     pamixer --default-source -d 5 && notify_mic_user
 }
 
-# Execute accordingly
-if [[ "$1" == "--get" ]]; then
-	get_volume
-elif [[ "$1" == "--inc" ]]; then
-	inc_volume
-elif [[ "$1" == "--dec" ]]; then
-	dec_volume
-elif [[ "$1" == "--toggle" ]]; then
-	toggle_mute
-elif [[ "$1" == "--toggle-mic" ]]; then
-	toggle_mic
-elif [[ "$1" == "--get-icon" ]]; then
-	get_icon
-elif [[ "$1" == "--get-mic-icon" ]]; then
-	get_mic_icon
-elif [[ "$1" == "--mic-inc" ]]; then
-	inc_mic_volume
-elif [[ "$1" == "--mic-dec" ]]; then
-	dec_mic_volume
-else
-	get_volume
-fi
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+  "GET")
+    get_volume
+    ;;
+  "INC")
+    inc_volume
+    ;;
+  "DEC")
+    dec_volume
+    ;;
+  "TOGGLE")
+    toggle_mute
+    ;;
+  "TOGGLE-MIC")
+    toggle_mic
+    ;;
+  "GET-ICON")
+    get_icon
+    ;;
+  "GET-MIC-ICON")
+    get_mic_icon
+    ;;
+  "MIC-INC")
+    inc_mic_volume
+    ;;
+  "MIC-DEC")
+    dec_mic_volume
+    ;;
+  *)
+    get_volume
+    ;;
+  esac
+  shift
+done    
