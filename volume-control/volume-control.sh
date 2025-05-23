@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-
-iDIR="$HOME/.config/swaync/icons"
-sDIR="."
+set -euo pipefail
 
 # Get Volume
 get_volume() {
@@ -17,14 +15,23 @@ get_volume() {
 get_icon() {
     current=$(get_volume)
     if [[ "$current" == "Muted" ]]; then
-        echo "$iDIR/volume-mute.png"
+        echo "󰝟"
     elif [[ "${current%\%}" -le 30 ]]; then
-        echo "$iDIR/volume-low.png"
+        echo "󰕿"
     elif [[ "${current%\%}" -le 60 ]]; then
-        echo "$iDIR/volume-mid.png"
+        echo "󰖀"
     else
-        echo "$iDIR/volume-high.png"
+        echo "󰕾"
     fi
+}
+
+get_micon() {
+  current=$(pamixer --get-mute)
+  if [[ "$current" == "true" ]]; then
+    echo "󰝟"
+  else
+    echo "󰕾"
+  fi
 }
 
 # Notify
@@ -56,7 +63,7 @@ dec_volume() {
 # Toggle Mute
 toggle_mute() {
 	if [ "$(pamixer --get-mute)" == "false" ]; then
-		pamixer -m && notify-send -e -u low -i "$iDIR/volume-mute.png" "Volume Switched OFF"
+		pamixer -m && notify-send -e -u low -i "$(get_icon)" "Volume Switched OFF"
 	elif [ "$(pamixer --get-mute)" == "true" ]; then
 		pamixer -u && notify-send -e -u low -i "$(get_icon)" "Volume Switched ON"
 	fi
@@ -70,6 +77,7 @@ toggle_mic() {
 		pamixer -u --default-source u && notify-send -e -u low -i "$iDIR/microphone.png" "Microphone Switched ON"
 	fi
 }
+
 # Get Mic Icon
 get_mic_icon() {
     current=$(pamixer --default-source --get-volume)
@@ -113,8 +121,40 @@ dec_mic_volume() {
     pamixer --default-source -d 5 && notify_mic_user
 }
 
+pulsemixerRunna ()
+{
+  pulsui="kitty -T pulsemixer-window pulsemixer"
+
+  # we test for an existing window
+  if [[ $(hyprctl clients -j | jq 'any(.[]; .title == "pulsemixer-window")') == "true" ]]; then
+    # we test if it's in current workspace
+    activeworkspace=$(hyprctl activeworkspace -j | jq -r '.id')
+    if [[ $(hyprctl clients -j | jq --arg ws $activeworkspace 'any(.[]; .title == "pulsemixer-window" and .workspace.id == ($ws|tonumber))') == "true" ]]; then
+      # kill it
+      hyprctl clients -j | \
+      jq -r '.[] | .title, .pid' | paste - - | \
+      grep pulsemixer-window | \
+      cut -f2 | \
+      xargs '-d\n' -I{} hyprctl dispatch "killwindow pid:{}"
+    else
+      # move to active workspace
+      hyprctl clients -j | \
+      jq -r '.[] | .title, .pid' | paste - - | \
+      grep pulsemixer-window | \
+      cut -f2 | \
+      xargs '-d\n' -I{} hyprctl dispatch "movetoworkspace $activeworkspace,pid:{}"
+    fi
+    return 0
+  fi
+  
+  # if we make it here, run it ;)
+  $pulsui 2>/dev/null &
+}
 while [[ $# -gt 0 ]]; do
   case "$1" in
+  "TUI")
+    pulsemixerRunna
+    ;;
   "GET")
     get_volume
     ;;
