@@ -24,17 +24,24 @@
       in rec {
         defaultPackage = bundleScript "draggin" (with pkgs; [ cowsay ]) ./default.sh;
         packages = {
-          volume = bundleScript "volume" (with pkgs; [ pamixer libnotify ]) ./volume-control/volume-control.sh;
+          volume = bundleScript "volume" (with pkgs; [ pamixer libnotify hyprland jq kitty ]) ./volume-control/volume-control.sh;
           bluetoof = bundleScript "bluetoof" (with pkgs; [ bluez hyprland jq kitty bluetui ]) ./bluetooth-waybar-module/bluetooth.sh;
           brightness = bundleScript "brightness" (with pkgs; [ brightnessctl libnotify ]) ./brightness-control/brightness-control.sh;
+          idle-toggle = bundleScript "idle-toggle" (with pkgs; [ hypridle ]) ./idle-toggle/idle-toggle.sh;
+          impala-runna = bundleScript "impala-runna" (with pkgs; [ impala hyprland jq kitty ]) ./impala-runna/impala-runna.sh;
         };
         apps = let
-          program = name: "${self.packages."${system}"."${name}"}/bin/${name}";
+          program = name: { type = "app"; program = "${self.packages."${system}"."${name}"}/bin/${name}"; };
         in {
           default = {
             type = "app";
             program = "${self.defaultPackage."${system}"}/bin/draggin";
           };
+          volume = program "volume";
+          bluetoof = program "bluetoof";
+          brightness = program "brightness";
+          idle-toggle = program "idle-toggle";
+          impala-runna = program "impala-runna";
         };
       }
     );
