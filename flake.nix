@@ -27,6 +27,7 @@
           volume = bundleScript "volume" (with pkgs; [ pamixer libnotify hyprland jq kitty ]) ./volume-control/volume-control.sh;
           bluetoof = bundleScript "bluetoof" (with pkgs; [ bluez hyprland jq kitty bluetui ]) ./bluetooth-waybar-module/bluetooth.sh;
           brightness = bundleScript "brightness" (with pkgs; [ brightnessctl libnotify ]) ./brightness-control/brightness-control.sh;
+          btop-runna = bundleScript "btop-runna" (with pkgs; [ btop hyprland jq kitty ]) ./btop-runna/btop-runna.sh;
           idle-toggle = bundleScript "idle-toggle" (with pkgs; [ hypridle ]) ./idle-toggle/idle-toggle.sh;
           impala-runna = bundleScript "impala-runna" (with pkgs; [ impala hyprland jq kitty ]) ./impala-runna/impala-runna.sh;
         };
@@ -40,6 +41,7 @@
           volume = program "volume";
           bluetoof = program "bluetoof";
           brightness = program "brightness";
+          btop-runna = program "btop-runna";
           idle-toggle = program "idle-toggle";
           impala-runna = program "impala-runna";
         };
