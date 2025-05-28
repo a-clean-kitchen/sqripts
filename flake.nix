@@ -1,5 +1,5 @@
 {
-  description = "A very basic flake";
+  description = "A bunch of scripts I WILL be using";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
@@ -12,24 +12,42 @@
         pkgs = import nixpkgs { inherit system; };
         bundleScript = name: buildInputs: scriptPath: 
           let
+            lib = pkgs.lib;
+            scriptPath = ./. + "/${name}/${name}.sh";
             theScript = (pkgs.writeScriptBin name (builtins.readFile scriptPath)).overrideAttrs(old: {
               buildCommand = "${old.buildCommand}\n patchShebangs $out";
             });
+
+            configPath = builtins.derivation {
+              inherit system;
+              inherit (pkgs) toybox;
+              name = "${name}-config";
+              src = ./. + "/${name}";
+              builder = (pkgs.writeShellScript "${name}-config-builder" ''
+                $toybox/bin/mkdir -p $out/bin/config
+                if [ ! -d "$src/config" ]; then
+                  exit 0
+                fi
+                $toybox/bin/cp -r $src/config/* $out/bin/config
+              '');
+            };
           in pkgs.symlinkJoin {
             inherit name;
-            paths = [ theScript ] ++ buildInputs;
+            paths = [ theScript configPath ] ++ buildInputs;
             buildInputs = [ pkgs.makeWrapper ];
-            postBuild = "wrapProgram $out/bin/${name} --prefix PATH : $out/bin";
+            postBuild = "wrapProgram $out/bin/${name} --prefix PATH : $out/bin;";
           };
       in rec {
         defaultPackage = bundleScript "draggin" (with pkgs; [ cowsay ]) ./default.sh;
         packages = {
-          volume = bundleScript "volume" (with pkgs; [ pamixer libnotify hyprland jq kitty ]) ./volume-control/volume-control.sh;
-          bluetoof = bundleScript "bluetoof" (with pkgs; [ bluez hyprland jq kitty bluetui ]) ./bluetooth-waybar-module/bluetooth.sh;
-          brightness = bundleScript "brightness" (with pkgs; [ brightnessctl libnotify ]) ./brightness-control/brightness-control.sh;
-          btop-runna = bundleScript "btop-runna" (with pkgs; [ btop hyprland jq kitty ]) ./btop-runna/btop-runna.sh;
-          idle-toggle = bundleScript "idle-toggle" (with pkgs; [ hypridle ]) ./idle-toggle/idle-toggle.sh;
-          impala-runna = bundleScript "impala-runna" (with pkgs; [ impala hyprland jq kitty ]) ./impala-runna/impala-runna.sh;
+          launcher = bundleScript "launcher" (with pkgs; [ rofi-wayland ]) ./launcher;
+          volume = bundleScript "volume" (with pkgs; [ pamixer libnotify hyprland jq kitty ]) ./volume;
+          bluetooth = bundleScript "bluetooth" (with pkgs; [ bluez hyprland jq kitty bluetui ]) ./bluetooth;
+          brightness = bundleScript "brightness" (with pkgs; [ brightnessctl libnotify ]) ./brightness;
+          screenshot = bundleScript "screenshot" (with pkgs; [ hyprshot libnotify rofi-wayland wf-recorder ]) ./screenshot;
+          btop-runna = bundleScript "btop-runna" (with pkgs; [ btop hyprland jq kitty ]) ./btop-runna;
+          idle-toggle = bundleScript "idle-toggle" (with pkgs; [ hypridle ]) ./idle-toggle;
+          impala-runna = bundleScript "impala-runna" (with pkgs; [ impala hyprland jq kitty ]) ./impala-runna;
         };
         apps = let
           program = name: { type = "app"; program = "${self.packages."${system}"."${name}"}/bin/${name}"; };
@@ -39,8 +57,9 @@
             program = "${self.defaultPackage."${system}"}/bin/draggin";
           };
           volume = program "volume";
-          bluetoof = program "bluetoof";
+          bluetooth = program "bluetooth";
           brightness = program "brightness";
+          screenshot = program "screenshot";
           btop-runna = program "btop-runna";
           idle-toggle = program "idle-toggle";
           impala-runna = program "impala-runna";
