@@ -41,6 +41,7 @@
         defaultPackage = bundleScript "draggin" (with pkgs; [ cowsay ]) ./default.sh;
         packages = {
           launcher = bundleScript "launcher" (with pkgs; [ rofi-wayland ]) ./launcher;
+          projdrop = bundleScript "projdrop" (with pkgs; [ rofi-wayland kitty ]) ./projdrop;
           volume = bundleScript "volume" (with pkgs; [ pamixer libnotify hyprland jq kitty ]) ./volume;
           bluetooth = bundleScript "bluetooth" (with pkgs; [ bluez hyprland jq kitty bluetui ]) ./bluetooth;
           brightness = bundleScript "brightness" (with pkgs; [ brightnessctl libnotify ]) ./brightness;
@@ -63,6 +64,7 @@
           btop-runna = program "btop-runna";
           idle-toggle = program "idle-toggle";
           impala-runna = program "impala-runna";
+          projdrop = program "projdrop";
         };
       }
     );
