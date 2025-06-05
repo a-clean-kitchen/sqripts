@@ -45,7 +45,7 @@
           volume = bundleScript "volume" (with pkgs; [ pamixer libnotify hyprland jq kitty ]) ./volume;
           bluetooth = bundleScript "bluetooth" (with pkgs; [ bluez hyprland jq kitty bluetui ]) ./bluetooth;
           brightness = bundleScript "brightness" (with pkgs; [ brightnessctl libnotify ]) ./brightness;
-          screenshot = bundleScript "screenshot" (with pkgs; [ hyprshot libnotify rofi-wayland wf-recorder ]) ./screenshot;
+          screenshot = bundleScript "screenshot" (with pkgs; [ hyprshot libnotify killall rofi-wayland wf-recorder ]) ./screenshot;
           btop-runna = bundleScript "btop-runna" (with pkgs; [ btop hyprland jq kitty ]) ./btop-runna;
           idle-toggle = bundleScript "idle-toggle" (with pkgs; [ hypridle ]) ./idle-toggle;
           impala-runna = bundleScript "impala-runna" (with pkgs; [ impala hyprland jq kitty ]) ./impala-runna;

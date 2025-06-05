@@ -54,6 +54,8 @@ runModePicker ()
         echo "ERROR: $rofiConfig not found"
         exit 1
     fi
+      
+    checkIfRecordingAndCancel
     
     rofiOpt="$video\n$picture"
     rofi=$(echo -e "$rofiOpt" | rofiCmd 1 2 120)
@@ -71,6 +73,14 @@ runModePicker ()
         ;;
     esac
 }
+
+checkIfRecordingAndCancel ()
+{
+  if pgrep wf-recorder > /dev/null; then
+    killall wf-recorder
+    exit 0
+  fi
+} 
 
 runRecordAudioPicker ()
 {
