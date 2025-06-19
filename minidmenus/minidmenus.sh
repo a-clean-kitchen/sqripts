@@ -12,6 +12,8 @@ help_and_exit ()
     echo
     echo "ARGS:"
     echo "  HELP                                     Print this help info."
+    echo "  DMENUS                                   Run a dmenu selector."
+    echo "  KILL                                     Kill a process."
     echo
     exit 0
 }
@@ -31,20 +33,7 @@ killMenu() {
     kill $pid
 }
 
-obsidianMenu() {
-    vault="Quade's%20Vault"
-    options="DAILY\nLAUNCH\n"
-    case "$(echo -e "$options" | dmeneww)" in
-      DAILY)
-          xdg-open "obsidian://adv-uri?open?vault=$vault&daily=true"
-          ;;
-      LAUNCH)
-          xdg-open "obsidian://open?vault=$vault&ifilepath=LaunchPad.md"
-          ;;
-    esac
-}
-
-dmenus="KILL\nOBSIDIAN"
+dmenus="KILL"
 
 dmenuSelector() {
   function=$(echo -e "$dmenus" | dmeneww)
@@ -61,9 +50,6 @@ while [[ $# -gt 0 ]]; do
       ;;
     KILL)
       killMenu
-      ;;
-    OBSIDIAN)
-      obsidianMenu
       ;;
     *)
       help_and_exit
