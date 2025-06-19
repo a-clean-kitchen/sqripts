@@ -2,11 +2,10 @@
 
 /*****----- Configuration -----*****/
 configuration {
-	modi:                       "drun,run,filebrowser,window";
-    show-icons:                 true;
+	modi:                       "drun,run,window";
+    show-icons:                 false;
     display-drun:               "Apps";
     display-run:                "Run";
-    display-filebrowser:        "Files";
     display-window:             "Windows";
 	drun-display-format:        "{name}";
 	window-format:              "{w} · {c} · {t}";
@@ -29,7 +28,7 @@ window {
     location:                    center;
     anchor:                      center;
     fullscreen:                  false;
-    width:                       1000px;
+    width:                       800px;
     x-offset:                    0px;
     y-offset:                    0px;
 
@@ -116,8 +115,8 @@ button selected {
 /*****----- Listview -----*****/
 listview {
     enabled:                     true;
-    columns:                     2;
-    lines:                       8;
+    columns:                     3;
+    lines:                       6;
     cycle:                       true;
     dynamic:                     true;
     scrollbar:                   false;

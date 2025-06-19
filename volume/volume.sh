@@ -139,6 +139,27 @@ pulsemixerRunna ()
   # if we make it here, run it ;)
   $pulsui 2>/dev/null &
 }
+
+systemd_init ()
+{
+  while true; do
+    echo "$(pactl -f json list | jq '.sinks[].name')"
+    echo "$(pactl -f json list | jq '.sources[].name')"
+    echo "$(whoami)"
+    if [[ $(pactl get-sink-mute $(pactl get-default-sink) | sed 's/Mute: //') == "no" ]];then
+      echo 'off' | tee -p '/sys/class/sound/ctl-led/speaker/mode' > /dev/null
+    else
+      echo 'on' | tee -p '/sys/class/sound/ctl-led/speaker/mode' > /dev/null
+    fi
+    if [[ $(pactl get-source-mute $(pactl get-default-source) | sed 's/Mute: //') == "no" ]];then
+      echo 'off' | tee -p '/sys/class/sound/ctl-led/mic/mode' > /dev/null
+    else
+      echo 'on' | tee -p '/sys/class/sound/ctl-led/mic/mode' > /dev/null
+    fi
+    sleep 0.1
+  done
+}
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
   "TUI")
@@ -152,7 +173,7 @@ while [[ $# -gt 0 ]]; do
     ;;
   "DEC")
     dec_volume
-    ;;
+   ;;
   "TOGGLE")
     toggle_mute
     ;;
@@ -170,6 +191,9 @@ while [[ $# -gt 0 ]]; do
     ;;
   "MIC-DEC")
     dec_mic_volume
+    ;;
+  "SYSTEMD-INIT")
+    systemd_init
     ;;
   *)
     get_volume
