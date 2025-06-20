@@ -16,7 +16,7 @@ configuration {
 }
 
 * {
-  font: 		    "CaskaydiaCove Nerd Font 10";
+  font: 		    "Monocraft Nerd Font 16";
     background:     #F5E7DEFF;
     background-alt: #EBDCD2FF;
     foreground:     #34302DFF;
@@ -55,7 +55,7 @@ window {
     location:                    center;
     anchor:                      south;
     fullscreen:                  false;
-    width:                       25%;
+    width:                       40%;
     x-offset:                    0px;
     y-offset:                    0px;
 
@@ -86,7 +86,7 @@ mainbox {
 
 /*****----- Inputbar -----*****/
 inputbar {
-    enabled:                     true;
+    enabled:                     false;
     spacing:                     0px;
     margin:                      0px;
     padding:                     0px;
@@ -118,7 +118,7 @@ entry {
     enabled:                     true;
     expand:                      false;
     padding:                     5px 10px;
-    width:                       100px;
+    width:                       15%;
     border-radius:               100%;
     background-color:            @alternate-background;
     text-color:                  @foreground-colour;
@@ -139,7 +139,7 @@ listview {
     layout:                      horizontal;
     reverse:                     false;
     fixed-height:                true;
-    fixed-columns:               true;
+    fixed-columns:               false;
     
     spacing:                     5px;
     margin:                      0px;
