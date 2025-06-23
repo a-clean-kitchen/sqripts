@@ -40,15 +40,20 @@
       in rec {
         defaultPackage = bundleScript "draggin" (with pkgs; [ cowsay ]) ./default.sh;
         packages = {
-          launcher = bundleScript "launcher" (with pkgs; [ rofi-wayland ]) ./launcher;
-          projdrop = bundleScript "projdrop" (with pkgs; [ rofi-wayland kitty ]) ./projdrop;
-          volume = bundleScript "volume" (with pkgs; [ pamixer libnotify hyprland jq kitty ]) ./volume;
+          # desktop/dotfiles
+          volume = bundleScript "volume" (with pkgs; [ pulseaudioFull pamixer sudo libnotify hyprland jq kitty ]) ./volume;
           bluetooth = bundleScript "bluetooth" (with pkgs; [ bluez hyprland jq kitty bluetui ]) ./bluetooth;
           brightness = bundleScript "brightness" (with pkgs; [ brightnessctl libnotify ]) ./brightness;
-          screenshot = bundleScript "screenshot" (with pkgs; [ hyprshot libnotify killall rofi-wayland wf-recorder ]) ./screenshot;
           btop-runna = bundleScript "btop-runna" (with pkgs; [ btop hyprland jq kitty ]) ./btop-runna;
           idle-toggle = bundleScript "idle-toggle" (with pkgs; [ hypridle ]) ./idle-toggle;
           impala-runna = bundleScript "impala-runna" (with pkgs; [ impala hyprland jq kitty ]) ./impala-runna;
+
+          # rofi/dmenus
+          launcher = bundleScript "launcher" (with pkgs; [ rofi-wayland ]) ./launcher;
+          minidmenus = bundleScript "minidmenus" (with pkgs; [ rofi-wayland ]) ./minidmenus;
+          projdrop = bundleScript "projdrop" (with pkgs; [ rofi-wayland kitty ]) ./projdrop;
+          screenshot = bundleScript "screenshot" (with pkgs; [ hyprshot libnotify killall rofi-wayland wf-recorder ]) ./screenshot;
+          quick-obsidian = bundleScript "quick-obsidian" (with pkgs; [ rofi-wayland ]) ./quick-obsidian;
         };
         apps = let
           program = name: { type = "app"; program = "${self.packages."${system}"."${name}"}/bin/${name}"; };
@@ -63,6 +68,8 @@
           screenshot = program "screenshot";
           btop-runna = program "btop-runna";
           idle-toggle = program "idle-toggle";
+          quick-obsidian = program "quick-obsidian";
+          minidmenus = program "minidmenus";
           impala-runna = program "impala-runna";
           projdrop = program "projdrop";
         };
