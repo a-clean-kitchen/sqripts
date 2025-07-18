@@ -47,7 +47,7 @@
           btop-runna = bundleScript "btop-runna" (with pkgs; [ btop hyprland jq kitty ]) ./btop-runna;
           idle-toggle = bundleScript "idle-toggle" (with pkgs; [ hypridle ]) ./idle-toggle;
           impala-runna = bundleScript "impala-runna" (with pkgs; [ impala hyprland jq kitty ]) ./impala-runna;
-          rebuild-nixos = bundleScript "rebuild-nixos" (with pkgs; [ nix ]) ./rebuild-nixos;
+          rebuild-nixos = bundleScript "rebuild-nixos" (with pkgs; [ nix systemdMinimal ]) ./rebuild-nixos;
 
           # rofi/dmenus
           launcher = bundleScript "launcher" (with pkgs; [ rofi-wayland ]) ./launcher;
