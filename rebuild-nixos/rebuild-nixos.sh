@@ -39,7 +39,7 @@ cmd=(
 )
 
 
-if ! sudo "''${cmd[@]}"; then
+if ! sudo "${cmd[@]}"; then
   # Switch failed
   exit 1
 else
