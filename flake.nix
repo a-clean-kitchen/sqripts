@@ -50,11 +50,11 @@
           rebuild-nixos = bundleScript "rebuild-nixos" (with pkgs; [ nix ]) ./rebuild-nixos;
 
           # rofi/dmenus
-          launcher = bundleScript "launcher" (with pkgs; [ rofi-wayland ]) ./launcher;
-          minidmenus = bundleScript "minidmenus" (with pkgs; [ rofi-wayland ]) ./minidmenus;
-          projdrop = bundleScript "projdrop" (with pkgs; [ rofi-wayland kitty ]) ./projdrop;
-          screenshot = bundleScript "screenshot" (with pkgs; [ hyprshot libnotify killall rofi-wayland wf-recorder ]) ./screenshot;
-          quick-obsidian = bundleScript "quick-obsidian" (with pkgs; [ rofi-wayland ]) ./quick-obsidian;
+          launcher = bundleScript "launcher" (with pkgs; [ rofi ]) ./launcher;
+          minidmenus = bundleScript "minidmenus" (with pkgs; [ rofi ]) ./minidmenus;
+          projdrop = bundleScript "projdrop" (with pkgs; [ rofi kitty ]) ./projdrop;
+          screenshot = bundleScript "screenshot" (with pkgs; [ hyprshot libnotify killall rofi wf-recorder ]) ./screenshot;
+          quick-obsidian = bundleScript "quick-obsidian" (with pkgs; [ rofi ]) ./quick-obsidian;
         };
         apps = let
           program = name: { type = "app"; program = "${self.packages."${system}"."${name}"}/bin/${name}"; };
